@@ -24,12 +24,30 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
 });
 const incidentForm = document.querySelector("#incident-form");
+const userForm = document.querySelector("#user-form");
+const userFormCard = document.querySelector("#user-form-card");
 const incidentTable = document.querySelector("#incident-table");
 const newBtn = document.querySelector("#new-btn");
 const closeBtn = document.querySelector("#close-btn");
+const closeBtn2 = document.querySelector("#close-btn-2");
 const formTitle = document.querySelector("#form-title");
+const currentUserEl = document.querySelector("#current-user");
+const logOutBtn = document.querySelector("#log-out-btn");
 
-//!green --------------------FUNCTIONS----------------------------------
+//!pink --------------------FUNCTIONS----------------------------------
+
+function checkCurrentUser() {
+  const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+  // console.log(currentUser);
+
+  // If current user not set redirect to login page
+  if (!currentUser) {
+    window.location.href = "/login.html";
+  } else {
+    currentUserEl.textContent = currentUser.username;
+  }
+}
+
 //Fetch tickets from the database
 async function fetchTicketData() {
   const response = await fetch(`http://localhost:8080/tickets`);
@@ -37,6 +55,26 @@ async function fetchTicketData() {
   return data;
 }
 
+// populates form Owner field dropdown
+async function loadOwnerDropdown() {
+  const users = await fetchUsers();
+
+  const selectDropDown = document.querySelector("#entryOwner");
+
+  selectDropDown.innerHTML = "";
+
+  // populate owner dropdown
+  users.forEach((entry) => {
+    //Create new option element
+    const newOption = document.createElement("option");
+
+    //Fill value
+    newOption.textContent = entry.username;
+
+    //Insert to DOM
+    selectDropDown.insertBefore(newOption, selectDropDown.lastChild);
+  });
+}
 //Search tickets with a searechterm in id, title or description)
 async function searchTickets(searchTerm) {
   const response = await fetch(`http://localhost:8080/tickets/search/${searchTerm}`);
@@ -53,19 +91,19 @@ async function fetchOneTicket(id) {
 const fetchUsers = async function () {
   const response = await fetch("http://localhost:8080/users");
   const data = await response.json();
-  console.log(data);
+  // console.log(data);
   return data;
 };
 
-const addUser = async function (username, role, password) {
+const createUser = async function (username, password, role) {
   try {
     const response = await fetch("http://localhost:8080/users", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         username: username,
-        role: role,
         password: password,
+        role: role,
       }),
     });
     const data = await response.json();
@@ -239,13 +277,12 @@ const saveTicket = async function (
 ) {
   // Fetch all tickets from database
   const ticketsArray = await fetchTicketData();
-  console.log(ticketsArray);
+  // console.log(ticketsArray);
 
   // Try to find if this ticketid alrdy exist in the array
   // this returns that ticket - Undefenied if not = new ticket
   const targetTicket = ticketsArray.find((entry) => entryId == entry.ticket_id);
-
-  console.log(targetTicket);
+  // console.log(targetTicket);
 
   //   If undefined =  doesnt exist - create new ticket
   if (!targetTicket) {
@@ -284,15 +321,15 @@ const saveTicket = async function (
 };
 
 // ----------------------INITIAL LOAD-------------------------------
-
+checkCurrentUser();
 loadTable();
-
+loadOwnerDropdown();
 // ----------------------INITIAL LOAD-------------------------------
 
 //!green --------------------Eventlisteners----------------------------------
 // ---------------------------Add entry----------------------------
 // ----NEW button eventlistener
-newBtn.addEventListener("click", function (e) {
+newBtn.addEventListener("click", async function (e) {
   e.preventDefault;
 
   //Update form title
@@ -340,7 +377,7 @@ incidentForm.addEventListener("submit", function (e) {
   incidentForm.reset();
 });
 
-// ----CLOSE button eventlistener
+// ----CLOSE button eventlistener ticket form
 closeBtn.addEventListener("click", function (e) {
   e.preventDefault();
 
@@ -349,11 +386,20 @@ closeBtn.addEventListener("click", function (e) {
   incidentForm.reset();
 });
 
+// ----CLOSE button 2 eventlistener - user form
+closeBtn2.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  // Hide form & Reset form fields
+  document.querySelector("#user-form-card").classList.add("d-none");
+  userForm.reset();
+});
+
 // ----------------------Edit & Delete entry------------------------
 let targetRowId; //global variable to save row id for eventlisteners
 let targetRowTitle; //global variable to save row title for eventlisteners
 
-// Event lsitener on incident table because edit/delete can be dynamicly created
+// EDIT / DELETE  Event lsitener on incident table because these can be dynamicly created
 document.querySelector("#incident-table").addEventListener("click", async function (e) {
   e.preventDefault();
 
@@ -371,10 +417,10 @@ document.querySelector("#incident-table").addEventListener("click", async functi
 
   //   ---------------Edit-----------------------------------
   if (e.target.classList.contains("edit-btn")) {
-    //Update form title from new entry to update entry
+    // Update form title from new entry to update entry
     formTitle.textContent = "Update Entry";
 
-    //   Render form card for editing
+    // Render form card for editing
     document.querySelector("#form-card").classList.remove("d-none");
 
     //Fetch ticket from database
@@ -418,6 +464,12 @@ searchForm.addEventListener("submit", async function (e) {
 
   const searchTerm = document.querySelector("#search-bar").value;
 
+  // if empty search
+  if (searchTerm == "") {
+    loadTable();
+    return;
+  }
+
   // Fetch corresponding tickets
   const results = await searchTickets(searchTerm);
 
@@ -446,6 +498,54 @@ searchForm.addEventListener("submit", async function (e) {
   });
 
   // console.log(results);
+});
+
+// Create user button eventlistener
+const createUserBtn = document.querySelector("#CreateUserBtn");
+createUserBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  // Render user form
+  userFormCard.classList.remove("d-none");
+});
+
+// User form submit eventlistener
+userForm.addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+
+  if (currentUser.role == "admin") {
+    // Extract values from form
+    const username = document.querySelector("#user-username").value;
+    const password = document.querySelector("#user-password").value;
+    const userRole = document.querySelector("#user-user-role").value;
+
+    // Post request - username must be unique or fail - duplicate
+    await createUser(username, password, userRole);
+
+    // Update owner dropdown options
+    await loadOwnerDropdown();
+
+    showAlert("success", `User ${username} has been created`);
+  } else {
+    showAlert("danger", "You are not authorized for this action");
+  }
+
+  // Hide form
+  userFormCard.classList.add("d-none");
+  userForm.reset();
+});
+
+// Log out btn eventlistener
+logOutBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  // Remove current user value from storage session
+  sessionStorage.removeItem("currentUser");
+
+  // Reload -> causes redirect to login page coz of (checkCurrentUser function)
+  location.reload();
 });
 // ----------------Testing---------------
 

@@ -26,7 +26,7 @@ const pool = mysql
 
 // Query all users---------------------------------------
 export async function getUsers() {
-  const result = await pool.query("SELECT * FROM users");
+  const result = await pool.query("SELECT * FROM users ORDER BY role;");
   return result[0]; // Relevant data in first array item
 } //returns a promise
 
@@ -43,12 +43,17 @@ export async function getTickets() {
 
 // Query search-term---------------------------------------
 export async function searchTickets(term) {
-  const result = await pool.query(`
-  SELECT * FROM tickets WHERE ticket_id LIKE "%${term}%"
-  OR title LIKE "%${term}%"
-  OR description LIKE "%${term}%"
-  OR owner LIKE "%${term}%";
-  `);
+  const result = await pool.query(
+    `SELECT * FROM tickets WHERE 
+  ticket_id LIKE CONCAT('%', ?, '%')
+  OR status LIKE CONCAT('%', ?, '%')
+  OR title LIKE CONCAT('%', ?, '%')
+  OR description LIKE CONCAT('%', ?, '%')
+  OR owner LIKE CONCAT('%', ?, '%')
+  ORDER BY timestamp ASC;
+  `,
+    [term, term, term, term, term]
+  );
   return result[0]; // Relevant data in first array item
 } //returns a promise
 
@@ -79,6 +84,7 @@ export async function deleteOneTicket(id) {
   // return result[0][0]; // Relevant object out of result array
 }
 
+// Update a ticket---------------------------------------
 export async function updateTicket(
   ticket_id,
   status,
@@ -125,7 +131,7 @@ export async function createTicket(
 }
 
 // Create a user----------------------------------------
-export async function createUser(username, role, password) {
+export async function createUser(username, password, role) {
   const result = await pool.query(
     `INSERT INTO users (username, role, password)
     VALUES(?,?,?)`,
@@ -133,6 +139,17 @@ export async function createUser(username, role, password) {
   );
 
   return getOneUser(username);
+}
+
+// createUser("testi-user", "testi123", "admin");
+
+// Delete a user----------------------------------------
+export async function deleteUser(username) {
+  const result = await pool.query(
+    `DELETE FROM users WHERE username = ?`,
+    [username] //provide id outside of query as second param to query function
+  );
+  // return result[0][0]; // Relevant object out of result array
 }
 
 // testing
