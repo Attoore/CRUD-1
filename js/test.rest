@@ -1,6 +1,7 @@
 GET http://localhost:8080
 ###
-
+GET ticketing-app.up.railway.app:8080/users
+###
 GET http://localhost:8080/users
 ###
 
