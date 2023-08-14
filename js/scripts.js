@@ -34,6 +34,9 @@ const formTitle = document.querySelector("#form-title");
 const currentUserEl = document.querySelector("#current-user");
 const logOutBtn = document.querySelector("#log-out-btn");
 
+// Server URL + Port
+const server = "http://localhost:8080";
+
 //!pink --------------------FUNCTIONS----------------------------------
 
 function checkCurrentUser() {
@@ -50,7 +53,7 @@ function checkCurrentUser() {
 
 //Fetch tickets from the database
 async function fetchTicketData() {
-  const response = await fetch(`http://localhost:8080/tickets`);
+  const response = await fetch(`${server}/tickets`);
   const data = await response.json();
   return data;
 }
@@ -77,19 +80,19 @@ async function loadOwnerDropdown() {
 }
 //Search tickets with a searechterm in id, title or description)
 async function searchTickets(searchTerm) {
-  const response = await fetch(`http://localhost:8080/tickets/search/${searchTerm}`);
+  const response = await fetch(`${server}/tickets/search/${searchTerm}`);
   const data = await response.json();
   return data;
 }
 
 async function fetchOneTicket(id) {
-  const response = await fetch(`http://localhost:8080/tickets/${id}`);
+  const response = await fetch(`${server}/tickets/${id}`);
   const data = await response.json();
   return data;
 }
 
 const fetchUsers = async function () {
-  const response = await fetch("http://localhost:8080/users");
+  const response = await fetch(`${server}/users`);
   const data = await response.json();
   // console.log(data);
   return data;
@@ -97,7 +100,7 @@ const fetchUsers = async function () {
 
 const createUser = async function (username, password, role) {
   try {
-    const response = await fetch("http://localhost:8080/users", {
+    const response = await fetch(`${server}/users`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
@@ -125,7 +128,7 @@ const addNewTicket = async function (
   timeCode
 ) {
   try {
-    const response = await fetch("http://localhost:8080/tickets", {
+    const response = await fetch(`${server}/tickets`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
@@ -158,7 +161,7 @@ const updateTicket = async function (
   timeCode
 ) {
   try {
-    const response = await fetch(`http://localhost:8080/tickets/update/${entryId}`, {
+    const response = await fetch(`${server}/tickets/update/${entryId}`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
@@ -181,7 +184,7 @@ const updateTicket = async function (
 };
 
 const deleteTicket = async function (id) {
-  const response = await fetch(`http://localhost:8080/tickets/delete/${id}`);
+  const response = await fetch(`${server}/tickets/delete/${id}`);
   const data = await response.json();
   console.log(data);
   return data;

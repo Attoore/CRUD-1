@@ -22,7 +22,7 @@ app.use(express.json()); // so json body is accepted in POST - createTicket func
 // app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-  res.send("Yo mada chiis!");
+  res.send("Welcome to the server!");
 });
 
 // Route for quering all users-------------------------------
