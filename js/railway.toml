@@ -3,11 +3,11 @@
 [routes]
   # Point to server.js directly
   [routes.backend]
-    file = "js/server.js"
+    file = "server.js"
 
   # Point to database.js directly
   [routes.additional]
-    file = "js/database.js"
+    file = "database.js"
 
 
 # [env]
