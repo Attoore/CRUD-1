@@ -1,0 +1,19 @@
+# Railway.toml
+
+[routes]
+  # Point to server.js directly
+  [routes.backend]
+    file = "js/server.js"
+
+  # Point to database.js directly
+  [routes.additional]
+    file = "js/database.js"
+
+
+# [env]
+#   # Reference environment variables set in Railway's UI
+#   MYSQL_HOST = "@mysql_host"
+#   MYSQL_USER = "@mysql_user"
+#   MYSQL_PASSWORD = "@mysql_password"
+#   MYSQL_DATABASE = "@mysql_database"
+#   MYSQL_PORT = "@mysql_port"

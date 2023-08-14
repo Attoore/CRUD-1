@@ -35,7 +35,8 @@ const currentUserEl = document.querySelector("#current-user");
 const logOutBtn = document.querySelector("#log-out-btn");
 
 // Server URL + Port
-const server = "http://localhost:8080";
+// const server = "http://localhost:8080";
+const server = "ticketing-app.up.railway.app";
 
 //!pink --------------------FUNCTIONS----------------------------------
 
