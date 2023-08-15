@@ -1,6 +1,6 @@
 //!yellow -------------------LOGIN-------------------------------------------
-// const server = "http://localhost:8080";
-const server = "ticketing-app.up.railway.app";
+const server = "http://localhost:8080";
+// const server = "ticketing-app.up.railway.app";
 
 const loginForm = document.querySelector("#login-form");
 
