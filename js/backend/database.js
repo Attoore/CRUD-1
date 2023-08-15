@@ -7,17 +7,17 @@ dontenv.config();
 //pool of connections to the database
 const pool = mysql
   .createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
-    port: process.env.MYSQL_PORT, // no need on local
+    host: process.env.MYSQLHOST,
+    user: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE,
+    port: process.env.MYSQLPORT, // no need on local
 
-    // host: MYSQL_HOST,
-    // user: MYSQL_USER,
-    // password: MYSQL_PASSWORD,
-    // database: MYSQL_DATABASE,
-    // port: MYSQL_PORT,
+    // host: process.env.MYSQL_HOST,
+    // user: process.env.MYSQL_USER,
+    // password: process.env.MYSQL_PASSWORD,
+    // database: process.env.MYSQL_DATABASE,
+    // port: process.env.MYSQL_PORT,
   })
   .promise(); //promise api version so can use async awayt instead of callbacks
 

@@ -169,6 +169,6 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
-  console.log(`Server is runnin on port 8080 http://localhost:${port}`);
+  console.log(`Server is running on port ${port} ( http://localhost:${port}) `);
 });
 // ----
