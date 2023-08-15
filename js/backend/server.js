@@ -166,7 +166,7 @@ app.use((err, req, res, next) => {
   res.status(500).json("ERROR: Something broke! (database)");
 });
 
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
   console.log(`Server is runnin on port 8080 http://localhost:${port}`);
