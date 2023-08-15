@@ -36,7 +36,7 @@ const logOutBtn = document.querySelector("#log-out-btn");
 
 // Server URL + Port
 // const server = "http://localhost:8080";
-const server = "t-app.up.railway.app";
+const server = "https://t-app.up.railway.app";
 
 //!pink --------------------FUNCTIONS----------------------------------
 

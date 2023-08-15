@@ -1,6 +1,6 @@
 //!yellow -------------------LOGIN-------------------------------------------
 // const server = "http://localhost:8080";
-const server = "t-app.up.railway.app";
+const server = "https://t-app.up.railway.app";
 
 const loginForm = document.querySelector("#login-form");
 
