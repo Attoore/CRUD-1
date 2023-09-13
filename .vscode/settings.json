@@ -14,5 +14,6 @@
       "username": "root",
       "password": "sonkor911"
     }
-  ]
+  ],
+  "liveServer.settings.port": 5501
 }

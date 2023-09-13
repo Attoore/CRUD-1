@@ -334,7 +334,7 @@ loadOwnerDropdown();
 // ---------------------------Add entry----------------------------
 // ----NEW button eventlistener
 newBtn.addEventListener("click", async function (e) {
-  e.preventDefault;
+  e.preventDefault();
 
   //Update form title
   formTitle.textContent = "New Entry";
@@ -403,7 +403,7 @@ closeBtn2.addEventListener("click", function (e) {
 let targetRowId; //global variable to save row id for eventlisteners
 let targetRowTitle; //global variable to save row title for eventlisteners
 
-// EDIT / DELETE  Event lsitener on incident table because these can be dynamicly created
+// EDIT / DELETE  Event lsitener on incident table because these can be dynamicly created - Using event delegation to handle on parent
 document.querySelector("#incident-table").addEventListener("click", async function (e) {
   e.preventDefault();
 

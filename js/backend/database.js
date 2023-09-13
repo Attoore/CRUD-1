@@ -3,6 +3,9 @@ import mysql from "mysql2";
 import dontenv from "dotenv";
 dontenv.config();
 
+//Imports the dotenv package & invokes its config() method.
+//Loads env variables from .env file to  Node.js process.env object
+
 // Enviroment variables---------------------------------
 //pool of connections to the database
 const pool = mysql
@@ -21,16 +24,6 @@ const pool = mysql
   })
   .promise(); //promise api version so can use async awayt instead of callbacks
 
-// Test the MySQL connection
-// pool.getConnection((err, connection) => {
-//   if (err) {
-//     console.error("Error connecting to MySQL database:", err);
-//   } else {
-//     console.log("Connected to MySQL database");
-//     connection.release();
-//   }
-// });
-
 // Query all users---------------------------------------
 export async function getUsers() {
   const result = await pool.query("SELECT * FROM users ORDER BY role;");
@@ -40,27 +33,6 @@ export async function getUsers() {
 // Query all ticket---------------------------------------
 export async function getTickets() {
   const result = await pool.query("SELECT * FROM tickets ORDER BY timestamp ASC;");
-  return result[0]; // Relevant data in first array item
-} //returns a promise
-
-// Using
-// await the promise and assign to variable
-// const tickets = await getTickets();
-// console.log(tickets);
-
-// Query search-term---------------------------------------
-export async function searchTickets(term) {
-  const result = await pool.query(
-    `SELECT * FROM tickets WHERE 
-  ticket_id LIKE CONCAT('%', ?, '%')
-  OR status LIKE CONCAT('%', ?, '%')
-  OR title LIKE CONCAT('%', ?, '%')
-  OR description LIKE CONCAT('%', ?, '%')
-  OR owner LIKE CONCAT('%', ?, '%')
-  ORDER BY timestamp ASC;
-  `,
-    [term, term, term, term, term]
-  );
   return result[0]; // Relevant data in first array item
 } //returns a promise
 
@@ -81,6 +53,22 @@ export async function getOneTicket(id) {
   );
   return result[0][0]; // Relevant object out of result array
 }
+
+// Query search-term---------------------------------------
+export async function searchTickets(term) {
+  const result = await pool.query(
+    `SELECT * FROM tickets WHERE 
+  ticket_id LIKE CONCAT('%', ?, '%')
+  OR status LIKE CONCAT('%', ?, '%')
+  OR title LIKE CONCAT('%', ?, '%')
+  OR description LIKE CONCAT('%', ?, '%')
+  OR owner LIKE CONCAT('%', ?, '%')
+  ORDER BY timestamp ASC;
+  `,
+    [term, term, term, term, term]
+  );
+  return result[0]; // Relevant data in first array item
+} //returns a promise
 
 // Delete one ticket---------------------------------------
 export async function deleteOneTicket(id) {
@@ -159,6 +147,11 @@ export async function deleteUser(username) {
   // return result[0][0]; // Relevant object out of result array
 }
 
+// Using
+// await the promise and assign to variable
+// const tickets = await getTickets();
+// console.log(tickets);
+
 // testing
 // const createResult = await createTicket(
 //   "1007",
@@ -171,3 +164,13 @@ export async function deleteUser(username) {
 //   "12312321321424240"
 // );
 // console.log(createResult);
+
+// Test the MySQL connection
+// pool.getConnection((err, connection) => {
+//   if (err) {
+//     console.error("Error connecting to MySQL database:", err);
+//   } else {
+//     console.log("Connected to MySQL database");
+//     connection.release();
+//   }
+// });

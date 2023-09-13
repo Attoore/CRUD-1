@@ -1,8 +1,8 @@
 GET http://localhost:8080
 ###
-GET ticketing-app.up.railway.app:8080/users
+GET https://t-app.up.railway.app/users/
 ###
-GET http://localhost:8080/users
+GET https://t-app.up.railway.app/users/delete/test-user-1
 ###
 
 GET http://localhost:8080/users/delete/testi1ss
@@ -13,11 +13,12 @@ GET http://localhost:8080/users/delete/testi1ss
 
 
 
-POST http://localhost:8080/users/login
+POST https://t-app.up.railway.app/users/
 Content-Type: application/json
 
 {
     "username": "bob-admin",
-    "password": "password"
+    "password": "bob123",
+    "role": "admin"
 }
 
