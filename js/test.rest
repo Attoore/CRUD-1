@@ -2,7 +2,7 @@ GET http://localhost:8080
 ###
 GET https://t-app.up.railway.app/users/
 ###
-GET https://t-app.up.railway.app/users/delete/test-user-1
+GET https://t-app.up.railway.app/users/delete/test-user2
 ###
 
 GET http://localhost:8080/users/delete/testi1ss
