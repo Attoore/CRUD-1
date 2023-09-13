@@ -1,5 +1,5 @@
 Frontend
-t-app-frontend.netlify.app/
+https://t-app-frontend.netlify.app/
 
 Backend
 https://t-app.up.railway.app/
