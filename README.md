@@ -12,6 +12,8 @@ password: test-user
 
 # Info
 
+This is a fullstack ticketing application created with vanilla JavaScript, Nodejs and MySQL
+
 ### Frontend - Bootstrap & Vanilla JavaScript
 
 - Simple, clean and user friendly interface
